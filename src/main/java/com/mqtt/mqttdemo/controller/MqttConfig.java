@@ -1,67 +1,140 @@
 package com.mqtt.mqttdemo.controller;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  * mqtt配置类
  */
+@Data
+@Component
 public class MqttConfig {
 
     @Value("${mqttconfig.queueSize}")
-    private static Integer queueSize;
+    private Integer queueSize;
+    private static Integer queueSizeStatic;
 
     @Value("${mqttconfig.serverUrls}")
-    private static String serverUrls;
+    private String serverUrls;
+    private static String serverUrlsStatic;
 
     @Value("${mqttconfig.userName}")
-    private static String userName;
+    private String userName;
+    private static String userNameStatic;
 
     @Value("${mqttconfig.password}")
-    private static String password;
+    private String password;
+    private static String passwordStatic;
 
-    @Value("${mqttconfig.topic}")
-    private static String topic;
+    @Value("${mqttconfig.readTopic}")
+    private String readTopic;
+    private static String readTopicStatic;
+
+
+    @Value("${mqttconfig.writeTopic}")
+    private String writeTopic;
+    private static String writeTopicStatic;
+
 
     @Value("${mqttconfig.completionTimeout}")
-    private static Integer completionTimeout;
+    private Integer completionTimeout;
+    private static Integer completionTimeoutStatic;
+
 
     @Value("${mqttconfig.qos}")
-    private static Integer qos;
+    private Integer qos;
+    private static Integer qosStatic;
 
     @Value("${mqttconfig.clientId}")
-    private static String clientId;
+    private String clientId;
+
+    private static String clientIdStatic;
 
     public MqttConfig() {
     }
+
     public static String getClientId() {
-        return clientId;
+        return clientIdStatic;
     }
 
     public static Integer getQueueSize() {
-        return queueSize;
+        return queueSizeStatic;
     }
 
-    public static String[] getServerUrls() {
-        return serverUrls.split(",");
+    public static String getServerUrls() {
+        return serverUrlsStatic;
     }
 
     public static String getUserName() {
-        return userName;
+        return userNameStatic;
     }
 
     public static String getPassword() {
-        return password;
+        return passwordStatic;
     }
 
-    public static String getTopic() {
-        return topic;
+    public static String getWriteTopic() {
+        return writeTopicStatic;
+    }
+
+    public static String getReadTopic() {
+        return readTopicStatic;
     }
 
     public static Integer getCompletionTimeout() {
-        return completionTimeout;
+        return completionTimeoutStatic;
     }
 
     public static Integer getQos() {
-        return qos;
+        return qosStatic;
     }
+
+    @PostConstruct
+    public void setQueueSize() {
+        queueSizeStatic = this.queueSize;
+    }
+
+    @PostConstruct
+    public void setServerUrls() {
+        serverUrlsStatic = this.serverUrls;
+    }
+
+    @PostConstruct
+    public void setUserName() {
+        userNameStatic = this.userName;
+    }
+
+    @PostConstruct
+    public void setPassword() {
+        passwordStatic = this.password;
+    }
+
+    @PostConstruct
+    public void setwriteTopic() {
+        writeTopicStatic = this.writeTopic;
+    }
+
+    @PostConstruct
+    public void setreadTopic() {
+        readTopicStatic = this.readTopic;
+    }
+
+    @PostConstruct
+    public void setCompletionTimeout() {
+        completionTimeoutStatic = this.completionTimeout;
+    }
+
+    @PostConstruct
+    public void setQos() {
+        qosStatic = this.qos;
+    }
+
+    @PostConstruct
+    public void setClientId() {
+        clientIdStatic = this.clientId;
+    }
+
 }

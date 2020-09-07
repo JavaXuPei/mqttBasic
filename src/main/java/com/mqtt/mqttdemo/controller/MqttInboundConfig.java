@@ -25,7 +25,7 @@ import org.springframework.messaging.MessagingException;
 @Configuration
 public class MqttInboundConfig {
 
-    public static LimitQueue<String> lqueue = new LimitQueue<>(MqttConfig.getQueueSize());
+    public static LimitQueue<String> lqueue = new LimitQueue<>(10);
 
     @Bean
     public MessageChannel mqttInputChannel() {
@@ -37,7 +37,7 @@ public class MqttInboundConfig {
     public MqttPahoClientFactory mqttClientFactory1() {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
-        options.setServerURIs(MqttConfig.getServerUrls());
+        options.setServerURIs(new String[]{MqttConfig.getServerUrls()});
         options.setUserName(MqttConfig.getUserName());
         options.setPassword(MqttConfig.getPassword().toCharArray());
         factory.setConnectionOptions(options);
@@ -48,8 +48,8 @@ public class MqttInboundConfig {
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(MqttConfig.getTopic(), MqttConfig.getClientId(),
-                        mqttClientFactory1(), MqttConfig.getTopic());
+                new MqttPahoMessageDrivenChannelAdapter(MqttConfig.getServerUrls(), MqttConfig.getClientId(),
+                        mqttClientFactory1(), MqttConfig.getReadTopic());
         adapter.setCompletionTimeout(MqttConfig.getCompletionTimeout());
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(MqttConfig.getQos());

@@ -26,7 +26,7 @@ public class MqttOutboundConfig {
     public MqttPahoClientFactory mqttClientFactory() {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
-        options.setServerURIs(MqttConfig.getServerUrls());
+        options.setServerURIs(new String[]{MqttConfig.getServerUrls()});
         options.setUserName(MqttConfig.getUserName());
         options.setPassword(MqttConfig.getPassword().toCharArray());
         factory.setConnectionOptions(options);
@@ -38,7 +38,6 @@ public class MqttOutboundConfig {
         MqttPahoMessageHandler messageHandler =
                 new MqttPahoMessageHandler(MqttConfig.getClientId(), mqttClientFactory());
         messageHandler.setAsync(true);
-        messageHandler.setDefaultTopic(MqttConfig.getTopic());
         return messageHandler;
     }
     @Bean
