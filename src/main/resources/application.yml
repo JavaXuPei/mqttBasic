@@ -1,0 +1,9 @@
+mqttconfig:
+  queueSize: 10
+  serverUrls: tcp://192.168.18.150:1883
+  userName: admin
+  password: password
+  topic: final_iotgateway,testTopic
+  completionTimeout: 5000
+  qos: 1
+
