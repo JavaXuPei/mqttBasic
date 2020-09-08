@@ -13,9 +13,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class MqttConfig {
 
-    @Value("${mqttconfig.queueSize}")
-    private Integer queueSize;
-    private static Integer queueSizeStatic;
+
 
     @Value("${mqttconfig.serverUrls}")
     private String serverUrls;
@@ -60,9 +58,7 @@ public class MqttConfig {
         return clientIdStatic;
     }
 
-    public static Integer getQueueSize() {
-        return queueSizeStatic;
-    }
+
 
     public static String getServerUrls() {
         return serverUrlsStatic;
@@ -92,10 +88,6 @@ public class MqttConfig {
         return qosStatic;
     }
 
-    @PostConstruct
-    public void setQueueSize() {
-        queueSizeStatic = this.queueSize;
-    }
 
     @PostConstruct
     public void setServerUrls() {

@@ -1,3 +1,11 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
 mqttconfig:
   queueSize: 10
   serverUrls: tcp://192.168.18.150:1883
@@ -8,4 +16,13 @@ mqttconfig:
   completionTimeout: 5000
   qos: 1
   clientId: bjy
+server:
+  port: 8081
+spring:
+  application:
+    name: Spring Boot Client
+  boot:
+    admin:
+      client:
+        url: http://localhost:8081
 
