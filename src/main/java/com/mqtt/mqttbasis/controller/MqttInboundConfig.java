@@ -1,6 +1,6 @@
-package com.mqtt.mqttdemo.controller;
+package com.mqtt.mqttbasis.controller;
 
-import com.mqtt.mqttdemo.official.LimitQueue;
+import com.mqtt.mqttbasis.official.LimitQueue;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

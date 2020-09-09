@@ -1,17 +1,15 @@
-package com.mqtt.mqttdemo;
+package com.mqtt.mqttbasis;
 
-import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableAdminServer
 @SpringBootApplication
-public class MqttdemoApplication {
+public class MqttBasisApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MqttdemoApplication.class, args);
+        SpringApplication.run(MqttBasisApplication.class, args);
     }
 
 }

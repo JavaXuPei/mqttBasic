@@ -1,4 +1,4 @@
-package com.mqtt.mqttdemo.controller;
+package com.mqtt.mqttbasis.controller;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

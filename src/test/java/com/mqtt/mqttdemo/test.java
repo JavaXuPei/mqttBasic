@@ -1,7 +1,7 @@
 package com.mqtt.mqttdemo;
 
 
-import com.mqtt.mqttdemo.service.MqttMessageService;
+import com.mqtt.mqttbasis.service.MqttMessageService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
-package com.mqtt.mqttdemo.controller;
+package com.mqtt.mqttbasis.controller;
 
 
-import com.mqtt.mqttdemo.dto.MqttDto;
-import com.mqtt.mqttdemo.service.MqttMessageService;
+import com.mqtt.mqttbasis.dto.MqttDto;
+import com.mqtt.mqttbasis.service.MqttMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

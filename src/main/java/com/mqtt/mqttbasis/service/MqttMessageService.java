@@ -1,6 +1,6 @@
-package com.mqtt.mqttdemo.service;
+package com.mqtt.mqttbasis.service;
 
-import com.mqtt.mqttdemo.dto.MqttDto;
+import com.mqtt.mqttbasis.dto.MqttDto;
 
 public interface MqttMessageService {
 

@@ -1,4 +1,4 @@
-package com.mqtt.mqttdemo.official;
+package com.mqtt.mqttbasis.official;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

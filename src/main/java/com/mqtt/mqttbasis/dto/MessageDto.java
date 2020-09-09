@@ -1,4 +1,4 @@
-package com.mqtt.mqttdemo.dto;
+package com.mqtt.mqttbasis.dto;
 
 import lombok.Data;
 
