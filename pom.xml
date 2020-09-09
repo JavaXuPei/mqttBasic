@@ -11,8 +11,8 @@
     <groupId>com.nettymqtt</groupId>
     <artifactId>mqttdemo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>mqttdemo</name>
-    <description>thingsboard中的mqtt模块</description>
+    <name>mqttBasis</name>
+    <description>mqttBasis</description>
 
     <properties>
         <java.version>1.8</java.version>
