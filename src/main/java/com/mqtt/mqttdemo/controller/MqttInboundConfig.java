@@ -63,7 +63,9 @@ public class MqttInboundConfig {
         return new MessageHandler() {
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
-                lqueue.offer(message.toString());
+                System.out.println(1111111);
+                System.out.println(message.getPayload().toString());
+                lqueue.offer(message.getPayload().toString());
             }
         };
     }

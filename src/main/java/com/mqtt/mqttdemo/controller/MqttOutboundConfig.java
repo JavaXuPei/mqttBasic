@@ -38,6 +38,8 @@ public class MqttOutboundConfig {
         MqttPahoMessageHandler messageHandler =
                 new MqttPahoMessageHandler(MqttConfig.getClientId(), mqttClientFactory());
         messageHandler.setAsync(true);
+        // 写入的topic
+        messageHandler.setDefaultTopic(MqttConfig.getWriteTopic());
         return messageHandler;
     }
     @Bean
