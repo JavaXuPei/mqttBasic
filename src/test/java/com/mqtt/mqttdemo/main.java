@@ -19,14 +19,22 @@ public class main {
     /**
      * 炉温 and 辊温
      */
-    static String[] lw = {"9ITJPaf5f4lcwic5NPeP", "r8pNydVfxBvq8OOqBS1J", "M0JqQRLS1oLZF7VAdT99", "ulBKoqcwdP8CmOx0PWiU", "6J1llv0H3wvxG3hQ1Et0"
+    static String[] lwAndGw = {"9ITJPaf5f4lcwic5NPeP", "r8pNydVfxBvq8OOqBS1J", "M0JqQRLS1oLZF7VAdT99", "ulBKoqcwdP8CmOx0PWiU",
+            "6J1llv0H3wvxG3hQ1Et0"
             , "7XYTQAGKaS63AwznY3vy", "C0nq4bSmPWuPCM9SqHad", "SFd6GrNFoJR4dIjLOPI6", "tZgDvMm5I44XwIVL9OpK", "nulsQejI0ZkiqCyKHJuV", "V5WXQEWWfbwMuQABTnCB", "l1alpeuNoTJAvrBPImU1"};
+
+
+    /**
+     * 炉温
+     */
+    static String[] lw = {"9ITJPaf5f4lcwic5NPeP", "r8pNydVfxBvq8OOqBS1J", "M0JqQRLS1oLZF7VAdT99", "ulBKoqcwdP8CmOx0PWiU", "6J1llv0H3wvxG3hQ1Et0"
+            , "7XYTQAGKaS63AwznY3vy"};
 
 
     static String template = "http://192.168.18.194:8080/api/v1/{}/telemetry";
 
     public static void main(String[] args) throws AWTException {
-        b();
+        a();
     }
 
 
@@ -37,14 +45,14 @@ public class main {
      */
 
     static public void a() throws AWTException {
-        for (int m = 0; m < 100000; m++) {
+        for (int m = 1; m < 100000; m++) {
             Robot r = new Robot();
-            for (int i = 0; i < lw.length; i++) {
+            for (int i = 1; i < lwAndGw.length; i++) {
                 Map<String, Object> stringStringMap = new HashMap<>();
                 Double va = RandomUtil.randomDouble(1, 10, 2, RoundingMode.HALF_DOWN) * m;
                 stringStringMap.put("temperature", String_(va.toString()));
                 System.out.println(String_(va.toString()));
-                String str = StrUtil.format(template, lw[i]); //str -> 我爱你，就像老鼠爱大米
+                String str = StrUtil.format(template, lwAndGw[i]); //str -> 我爱你，就像老鼠爱大米
                 String result2 = HttpRequest.post(str)
                         .header(Header.CONTENT_TYPE, "application/json")//头信息，多个头信息多次调用此方法即可
                         .form(stringStringMap)//表单内容

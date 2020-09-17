@@ -1,4 +1,5 @@
 package com.mqtt.mqttbasis.service;
+
 import com.alibaba.fastjson.JSONObject;
 import com.mqtt.mqttbasis.controller.MqttOutboundConfig;
 import com.mqtt.mqttbasis.dto.MqttDto;
@@ -9,10 +10,12 @@ import com.mqtt.mqttbasis.official.SpringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class MqttMessageServiceImpl implements MqttMessageService {
 
@@ -68,11 +71,9 @@ public class MqttMessageServiceImpl implements MqttMessageService {
                     newmessageDtoList.addAll(objList);
                 }
             }
-
         }
         mqttDto.setValues(deduplication(newmessageDtoList));
         return mqttDto;
-
     }
 
     /**
@@ -84,6 +85,7 @@ public class MqttMessageServiceImpl implements MqttMessageService {
         MqttOutboundConfig.MyGateway gateway = ctx.getBean(MqttOutboundConfig.MyGateway.class);
         gateway.sendToMqtt(message);
     }
+
     /**
      * 去重
      */

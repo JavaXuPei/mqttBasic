@@ -1,6 +1,7 @@
 package com.mqtt.mqttdemo;
 
 
+import com.mqtt.mqttbasis.MqttBasisApplication;
 import com.mqtt.mqttbasis.service.MqttMessageService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = MqttBasisApplication.class)
 public class test {
 
     @Autowired
@@ -19,11 +20,6 @@ public class test {
     public void mqttOutbound() {
         String content = "我是一条mqtt消息内容";
         mqttMessageService.mqttOutbound(content);
-    }
-
-    @Test
-    public void mqttInbounUpDate() {
-        mqttMessageService.mqttInbounUpDate();
     }
 
 }
