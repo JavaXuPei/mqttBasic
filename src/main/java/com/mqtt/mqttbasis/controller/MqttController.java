@@ -4,6 +4,7 @@ package com.mqtt.mqttbasis.controller;
 import com.alibaba.fastjson.JSON;
 import com.mqtt.mqttbasis.dto.MqttDto;
 import com.mqtt.mqttbasis.service.MqttMessageService;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,5 +67,48 @@ public class MqttController {
     public void mqttWrite(String message) {
         String ms = JSON.toJSONString(message);
         mqttMessageService.mqttOutbound(ms);
+    }
+
+    /**
+     * 修改key的值
+     */
+    @RequestMapping(value = "/writeUpdate/Message", method = RequestMethod.POST)
+    @ResponseBody
+    public void mqttWrite(String k, String v) {
+        k = JSON.toJSONString(k);
+        v = JSON.toJSONString(v);
+    }
+
+    /**
+     * 建立指定连接
+     */
+    @RequestMapping(value = "/custom/connection", method = RequestMethod.POST)
+    @ResponseBody
+    public void createConnection(String host, String port, String username, String password) throws MqttException {
+        mqttMessageService.createConnection(host, port, username, password);
+    }
+
+    /**
+     * 自定义向topic发送消息
+     */
+    @RequestMapping(value = "/custom/pub", method = RequestMethod.POST)
+    @ResponseBody
+    public void createPub(String topic, String msg, int qos) throws MqttException {
+        mqttMessageService.createPub(topic, msg, qos);
+    }
+
+
+    /**
+     * 断开连接
+     */
+
+
+    /**
+     * 自定义订阅topic的消息
+     */
+    @RequestMapping(value = "/custom/sub", method = RequestMethod.POST)
+    @ResponseBody
+    public void createSub(String topic) throws MqttException {
+        mqttMessageService.createSub(topic);
     }
 }

@@ -1,13 +1,16 @@
 package com.mqtt.mqttbasis.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mqtt.mqttbasis.controller.MqttOutboundConfig;
-import com.mqtt.mqttbasis.dto.MqttDto;
 import com.mqtt.mqttbasis.controller.MqttInboundConfig;
+import com.mqtt.mqttbasis.controller.MqttOutboundConfig;
+import com.mqtt.mqttbasis.controller.MqttTest;
 import com.mqtt.mqttbasis.dto.MessageDto;
+import com.mqtt.mqttbasis.dto.MqttDto;
 import com.mqtt.mqttbasis.official.LimitQueue;
 import com.mqtt.mqttbasis.official.SpringUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class MqttMessageServiceImpl implements MqttMessageService {
+
+    private MqttClient mqttClient;
+    private final String clientId = "bjy" + System.currentTimeMillis();
 
     /**
      * 读
@@ -87,10 +93,91 @@ public class MqttMessageServiceImpl implements MqttMessageService {
     }
 
     /**
+     * 自定义建立连接
+     *
+     * @param host     连接地址(tcp://192.168.18.190:1883)
+     * @param port     端口号 1883
+     * @param username 用户名
+     * @param password 密码
+     */
+    @Override
+    public void createConnection(String host, String port, String username, String password) throws MqttException {
+        MqttTest mqttTest = new MqttTest();
+        setMqttClient(host, port, username, password, mqttTest);
+    }
+
+    @Override
+    public void createPub(String topic, String msg, int qos) throws MqttException {
+        MqttMessage mqttMessage = new MqttMessage();
+        mqttMessage.setQos(qos);
+        mqttMessage.setPayload(msg.getBytes());
+        MqttTopic mqttTopic = mqttClient.getTopic(topic);
+        MqttDeliveryToken token = mqttTopic.publish(mqttMessage);
+        token.waitForCompletion();
+    }
+
+    @Override
+    public void createSub(String topic) throws MqttException {
+        mqttClient.subscribe(topic);
+    }
+
+    @Override
+    public void createClose() throws MqttException {
+        mqttClient.close();
+        mqttClient.disconnect();
+    }
+
+    /**
      * 去重
      */
     public Collection<MessageDto> deduplication(Collection<MessageDto> dtoList) {
         return new HashSet<>(dtoList);
     }
+
+
+    /**
+     * 客户端connect连接mqtt服务器
+     *
+     * @param userName
+     * @param passWord
+     * @param mqttCallback
+     * @throws MqttException
+     */
+    public void setMqttClient(String host, String port, String userName, String passWord, MqttCallback mqttCallback) throws MqttException {
+        MqttConnectOptions options = mqttConnectOptions(host + ":" + port, userName, passWord);
+        if (mqttCallback == null) {
+            mqttClient.setCallback(new MqttTest());
+        } else {
+            mqttClient.setCallback(mqttCallback);
+        }
+        mqttClient.connect(options);
+    }
+
+    /**
+     * MQTT连接参数设置
+     */
+    private MqttConnectOptions mqttConnectOptions(String host, String userName, String passWord) throws MqttException {
+        mqttClient = new MqttClient(host, clientId, new MemoryPersistence());
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setUserName(userName);
+        options.setPassword(passWord.toCharArray());
+        //默认：30
+        options.setConnectionTimeout(10);
+        //默认：false
+        options.setAutomaticReconnect(true);
+        //默认：true
+        options.setCleanSession(false);
+        //options.setKeepAliveInterval(20);//默认：60
+        return options;
+    }
+
+    /**
+     * 关闭MQTT连接
+     */
+    public void close() throws MqttException {
+        mqttClient.close();
+        mqttClient.disconnect();
+    }
+
 
 }

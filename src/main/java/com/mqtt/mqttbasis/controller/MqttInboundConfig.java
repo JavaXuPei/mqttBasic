@@ -41,6 +41,10 @@ public class MqttInboundConfig {
         options.setUserName(MqttConfig.getUserName());
         options.setPassword(MqttConfig.getPassword().toCharArray());
         factory.setConnectionOptions(options);
+        // 自动重连
+        //options.setAutomaticReconnect(true);
+        // 设置为True则启用清理会话
+        // options.setCleanSession(false);
         return factory;
     }
 
@@ -63,8 +67,6 @@ public class MqttInboundConfig {
         return new MessageHandler() {
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
-                System.out.println(1111111);
-                System.out.println(message.getPayload().toString());
                 lqueue.offer(message.getPayload().toString());
             }
         };
