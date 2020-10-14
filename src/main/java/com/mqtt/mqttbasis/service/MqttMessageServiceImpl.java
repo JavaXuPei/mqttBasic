@@ -101,9 +101,14 @@ public class MqttMessageServiceImpl implements MqttMessageService {
      * @param password 密码
      */
     @Override
-    public void createConnection(String host, String port, String username, String password) throws MqttException {
+    public String createConnection(String host, String port, String username, String password) throws MqttException {
         MqttTest mqttTest = new MqttTest();
-        setMqttClient(host, port, username, password, mqttTest);
+        return setMqttClient(host, port, username, password, mqttTest);
+    }
+
+    @Override
+    public String getConnection() {
+        return mqttClient.getServerURI();
     }
 
     @Override
@@ -143,7 +148,7 @@ public class MqttMessageServiceImpl implements MqttMessageService {
      * @param mqttCallback
      * @throws MqttException
      */
-    public void setMqttClient(String host, String port, String userName, String passWord, MqttCallback mqttCallback) throws MqttException {
+    public String setMqttClient(String host, String port, String userName, String passWord, MqttCallback mqttCallback) throws MqttException {
         MqttConnectOptions options = mqttConnectOptions(host + ":" + port, userName, passWord);
         if (mqttCallback == null) {
             mqttClient.setCallback(new MqttTest());
@@ -151,6 +156,7 @@ public class MqttMessageServiceImpl implements MqttMessageService {
             mqttClient.setCallback(mqttCallback);
         }
         mqttClient.connect(options);
+        return mqttClient.getServerURI();
     }
 
     /**

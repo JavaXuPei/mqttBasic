@@ -1,6 +1,6 @@
 mqttconfig:
   queueSize: 10
-  serverUrls: tcp://192.168.18.190:1883
+  serverUrls: tcp://192.168.18.191:1883
   userName: admin
   password: password
   readTopic: final_iotgateway

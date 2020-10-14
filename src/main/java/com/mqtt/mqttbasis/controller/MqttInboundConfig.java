@@ -32,8 +32,7 @@ public class MqttInboundConfig {
         return new DirectChannel();
     }
 
-
-    @Bean
+    //@Bean
     public MqttPahoClientFactory mqttClientFactory1() {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
@@ -49,7 +48,7 @@ public class MqttInboundConfig {
     }
 
 
-    @Bean
+//    @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter =
                 new MqttPahoMessageDrivenChannelAdapter(MqttConfig.getServerUrls(), MqttConfig.getClientId(),
@@ -67,6 +66,8 @@ public class MqttInboundConfig {
         return new MessageHandler() {
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
+                System.out.println("收数");
+                System.out.println(message.getPayload().toString());
                 lqueue.offer(message.getPayload().toString());
             }
         };
