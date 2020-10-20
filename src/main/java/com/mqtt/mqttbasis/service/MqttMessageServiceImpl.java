@@ -128,8 +128,8 @@ public class MqttMessageServiceImpl implements MqttMessageService {
 
     @Override
     public void createClose() throws MqttException {
-        mqttClient.close();
         mqttClient.disconnect();
+        mqttClient.close();
     }
 
     /**

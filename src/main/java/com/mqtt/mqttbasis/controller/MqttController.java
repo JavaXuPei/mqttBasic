@@ -132,10 +132,15 @@ public class MqttController {
     /**
      * 断开连接
      */
-    @RequestMapping(value = "/custom/close", method = RequestMethod.POST)
+    @RequestMapping(value = "/custom/close", method = RequestMethod.GET)
     @ResponseBody
-    public void createClose() throws MqttException {
-        mqttMessageService.createClose();
+    public AjaxResult createClose(){
+        try {
+            mqttMessageService.createClose();
+        } catch (Exception e) {
+           return AjaxResult.fail("断开连接失败");
+        }
+        return AjaxResult.success("断开连接成功");
     }
 
 
