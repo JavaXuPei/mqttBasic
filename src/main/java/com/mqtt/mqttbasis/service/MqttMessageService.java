@@ -31,7 +31,7 @@ public interface MqttMessageService {
     /**
      * 自定义建立连接
      */
-    String createConnection(String host, String port, String username, String password) throws MqttException;
+    String createConnection(String host, String port, String username, String password,String topic) throws MqttException;
 
     /**
      * 查询建立的连接

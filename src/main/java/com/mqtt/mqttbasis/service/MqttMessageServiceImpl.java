@@ -1,11 +1,13 @@
 package com.mqtt.mqttbasis.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mqtt.mqttbasis.controller.MqttInboundConfig;
 import com.mqtt.mqttbasis.controller.MqttOutboundConfig;
 import com.mqtt.mqttbasis.controller.MqttTest;
 import com.mqtt.mqttbasis.dto.MessageDto;
 import com.mqtt.mqttbasis.dto.MqttDto;
+import com.mqtt.mqttbasis.entity.ConnectionConfigEntity;
 import com.mqtt.mqttbasis.official.LimitQueue;
 import com.mqtt.mqttbasis.official.SpringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +23,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class MqttMessageServiceImpl implements MqttMessageService {
-
     private MqttClient mqttClient;
     private final String clientId = "bjy" + System.currentTimeMillis();
 
@@ -101,9 +102,17 @@ public class MqttMessageServiceImpl implements MqttMessageService {
      * @param password 密码
      */
     @Override
-    public String createConnection(String host, String port, String username, String password) throws MqttException {
+    public String createConnection(String host, String port, String username, String password, String topic) throws MqttException {
         MqttTest mqttTest = new MqttTest();
-        return setMqttClient(host, port, username, password, mqttTest);
+        ConnectionConfigEntity connectionConfigEntity = new ConnectionConfigEntity();
+        connectionConfigEntity.delete(new QueryWrapper<ConnectionConfigEntity>().ge("is_delete", 0));
+        connectionConfigEntity.setHost(host)
+                .setProt(port)
+                .setUsername(username)
+                .setTopic(topic)
+                .setPassword(password);
+        connectionConfigEntity.insert();
+        return setMqttClient(host, port, username, password, topic, mqttTest);
     }
 
     @Override
@@ -148,7 +157,7 @@ public class MqttMessageServiceImpl implements MqttMessageService {
      * @param mqttCallback
      * @throws MqttException
      */
-    public String setMqttClient(String host, String port, String userName, String passWord, MqttCallback mqttCallback) throws MqttException {
+    public String setMqttClient(String host, String port, String userName, String passWord, String topic, MqttCallback mqttCallback) throws MqttException {
         MqttConnectOptions options = mqttConnectOptions(host + ":" + port, userName, passWord);
         if (mqttCallback == null) {
             mqttClient.setCallback(new MqttTest());
@@ -156,6 +165,7 @@ public class MqttMessageServiceImpl implements MqttMessageService {
             mqttClient.setCallback(mqttCallback);
         }
         mqttClient.connect(options);
+        mqttClient.subscribe(topic);
         return mqttClient.getServerURI();
     }
 
@@ -170,10 +180,10 @@ public class MqttMessageServiceImpl implements MqttMessageService {
         //默认：30
         options.setConnectionTimeout(10);
         //默认：false
-        options.setAutomaticReconnect(true);
+        options.setAutomaticReconnect(false);
         //默认：true
         options.setCleanSession(false);
-        //options.setKeepAliveInterval(20);//默认：60
+        options.setKeepAliveInterval(20);//默认：60
         return options;
     }
 

@@ -3,7 +3,10 @@ package com.mqtt.mqttbasis.controller;
 
 import cn.hutool.core.lang.Validator;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mqtt.mqttbasis.dto.MqttDto;
+import com.mqtt.mqttbasis.entity.ConnectionConfigEntity;
+import com.mqtt.mqttbasis.mapper.ConnectionConfigMapper;
 import com.mqtt.mqttbasis.service.MqttMessageService;
 import com.mqtt.mqttbasis.utils.AjaxResult;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -22,6 +25,8 @@ import java.util.Map;
 @RestController
 public class MqttController {
 
+    @Autowired
+    private ConnectionConfigMapper connectionConfigMapper;
 
     @Autowired
     private MqttMessageService mqttMessageService;
@@ -91,8 +96,8 @@ public class MqttController {
     @RequestMapping(value = "/custom/connection", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult createConnection(
-            @RequestBody Map<String, Object> jsonObj) {
-        for (String s : Arrays.asList("host", "port", "username", "password")) {
+            @RequestBody Map<String, Object> jsonObj){
+        for (String s : Arrays.asList("host", "port", "username", "password", "topic")) {
             if (Validator.isNull(jsonObj.get(s))) {
                 return AjaxResult.fail("参数不能为空");
             }
@@ -101,7 +106,9 @@ public class MqttController {
         try {
             serviceUrl = mqttMessageService.createConnection(CONNECTION_TYPE + jsonObj.get("host").toString(), jsonObj.get("port").toString(),
                     jsonObj.get("username").toString(),
-                    jsonObj.get("password").toString());
+                    jsonObj.get("password").toString(),
+                    jsonObj.get("topic").toString()
+            );
         } catch (Exception e) {
             return AjaxResult.fail("连接失败");
         }
@@ -111,13 +118,23 @@ public class MqttController {
     /**
      * 查询已经建立的连接
      */
-
     @RequestMapping(value = "/custom/get/connection", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResult getConnection() {
         String serviceUrl = mqttMessageService.getConnection();
         return AjaxResult.success(serviceUrl, "ok");
     }
+
+    /**
+     * 查询已经建立的连接
+     */
+    @RequestMapping(value = "/custom/get/Dbconnection", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResult getDbConnection() {
+        ConnectionConfigEntity connectionConfigEntity = connectionConfigMapper.selectOne(new QueryWrapper<ConnectionConfigEntity>().eq("is_delete", 0));
+        return AjaxResult.success(connectionConfigEntity, "ok");
+    }
+
 
     /**
      * 自定义向topic发送消息
@@ -134,11 +151,11 @@ public class MqttController {
      */
     @RequestMapping(value = "/custom/close", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult createClose(){
+    public AjaxResult createClose() {
         try {
             mqttMessageService.createClose();
         } catch (Exception e) {
-           return AjaxResult.fail("断开连接失败");
+            return AjaxResult.fail("断开连接失败");
         }
         return AjaxResult.success("断开连接成功");
     }
