@@ -4,7 +4,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/mqtt_basis?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password:
+    password: 123456
     druid:
       #最大活跃数
       max-active: 20

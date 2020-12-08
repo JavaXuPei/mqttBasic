@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mqtt.mqttbasis.controller.MqttInboundConfig;
 import com.mqtt.mqttbasis.controller.MqttOutboundConfig;
-import com.mqtt.mqttbasis.controller.MqttTest;
+import com.mqtt.mqttbasis.controller.MqttCallbackImpl;
 import com.mqtt.mqttbasis.dto.MessageDto;
 import com.mqtt.mqttbasis.dto.MqttDto;
 import com.mqtt.mqttbasis.entity.ConnectionConfigEntity;
@@ -103,7 +103,7 @@ public class MqttMessageServiceImpl implements MqttMessageService {
      */
     @Override
     public String createConnection(String host, String port, String username, String password, String topic) throws MqttException {
-        MqttTest mqttTest = new MqttTest();
+        MqttCallbackImpl mqttTest = new MqttCallbackImpl();
         ConnectionConfigEntity connectionConfigEntity = new ConnectionConfigEntity();
         connectionConfigEntity.delete(new QueryWrapper<ConnectionConfigEntity>().ge("is_delete", 0));
         connectionConfigEntity.setHost(host)
@@ -160,7 +160,7 @@ public class MqttMessageServiceImpl implements MqttMessageService {
     public String setMqttClient(String host, String port, String userName, String passWord, String topic, MqttCallback mqttCallback) throws MqttException {
         MqttConnectOptions options = mqttConnectOptions(host + ":" + port, userName, passWord);
         if (mqttCallback == null) {
-            mqttClient.setCallback(new MqttTest());
+            mqttClient.setCallback(new MqttCallbackImpl());
         } else {
             mqttClient.setCallback(mqttCallback);
         }

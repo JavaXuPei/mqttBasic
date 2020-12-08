@@ -1,5 +1,6 @@
 package com.mqtt.mqttbasis.controller;
 
+import com.mqtt.mqttbasis.official.LimitQueue;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,9 +13,7 @@ import javax.annotation.PostConstruct;
 @Data
 @Component
 public class MqttConfig {
-
-
-
+    public static LimitQueue<String> lqueue = new LimitQueue<>(10);
     @Value("${mqttconfig.serverUrls}")
     private String serverUrls;
     private static String serverUrlsStatic;
