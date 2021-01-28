@@ -7,20 +7,21 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mqtt.mqttbasis.dto.MqttDto;
 import com.mqtt.mqttbasis.entity.ConnectionConfigEntity;
 import com.mqtt.mqttbasis.mapper.ConnectionConfigMapper;
+import com.mqtt.mqttbasis.mqtt.MqttOutboundConfig;
 import com.mqtt.mqttbasis.service.MqttMessageService;
 import com.mqtt.mqttbasis.utils.AjaxResult;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Map;
 
 /**
- * 控制层
- *
  * @author bjy
  */
+
 @RequestMapping("/api")
 @RestController
 public class MqttController {
@@ -32,6 +33,11 @@ public class MqttController {
     private MqttMessageService mqttMessageService;
 
     private final static String CONNECTION_TYPE = "tcp://";
+    private final static String HOST = "host";
+    private final static String PORT = "port";
+    private final static String USERNAME = "username";
+    private final static String PASSWORD = "password";
+    private final static String TOPIC = "topic";
 
     /**
      * 获取最新的mqtt消息
@@ -90,21 +96,28 @@ public class MqttController {
         v = JSON.toJSONString(v);
     }
 
+    @RequestMapping(value = "/del/test", method = RequestMethod.DELETE)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public AjaxResult delTest() {
+        return AjaxResult.fail("错误");
+    }
+
     /**
      * 建立指定连接
      */
     @RequestMapping(value = "/custom/connection", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult createConnection(
-            @RequestBody Map<String, Object> jsonObj){
-        for (String s : Arrays.asList("host", "port", "username", "password", "topic")) {
+            @RequestBody Map<String, Object> jsonObj) {
+        for (String s : Arrays.asList(HOST, PORT, USERNAME, PASSWORD, TOPIC)) {
             if (Validator.isNull(jsonObj.get(s))) {
                 return AjaxResult.fail("参数不能为空");
             }
         }
         String serviceUrl;
         try {
-            serviceUrl = mqttMessageService.createConnection(CONNECTION_TYPE + jsonObj.get("host").toString(), jsonObj.get("port").toString(),
+            serviceUrl = mqttMessageService.createConnection(CONNECTION_TYPE + jsonObj.get(HOST).toString(), jsonObj.get(PORT).toString(),
                     jsonObj.get("username").toString(),
                     jsonObj.get("password").toString(),
                     jsonObj.get("topic").toString()
@@ -114,6 +127,7 @@ public class MqttController {
         }
         return AjaxResult.success(serviceUrl, "建立连接成功");
     }
+
 
     /**
      * 查询已经建立的连接

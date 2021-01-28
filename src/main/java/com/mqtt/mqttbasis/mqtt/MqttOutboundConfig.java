@@ -1,5 +1,6 @@
-package com.mqtt.mqttbasis.controller;
+package com.mqtt.mqttbasis.mqtt;
 
+import com.mqtt.mqttbasis.mqtt.MqttConfig;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

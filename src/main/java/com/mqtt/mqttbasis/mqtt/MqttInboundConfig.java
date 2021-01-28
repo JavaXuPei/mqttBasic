@@ -1,5 +1,6 @@
-package com.mqtt.mqttbasis.controller;
+package com.mqtt.mqttbasis.mqtt;
 
+import com.mqtt.mqttbasis.mqtt.MqttConfig;
 import com.mqtt.mqttbasis.official.LimitQueue;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,7 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 
 /**
- * The following Spring Boot application shows an example of how to configure the inbound adapter with Java configuration:
+ *
  * 以下Spring Boot应用程序显示了如何使用Java配置来配置入站适配器的示例：
  *
  * @author bjy

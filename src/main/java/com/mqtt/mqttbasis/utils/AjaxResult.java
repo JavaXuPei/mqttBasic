@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author bjy
  */
-public class AjaxResult<T> implements Serializable{
+public class AjaxResult implements Serializable{
 
     /**
      *

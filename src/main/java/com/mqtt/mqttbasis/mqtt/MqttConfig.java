@@ -1,4 +1,4 @@
-package com.mqtt.mqttbasis.controller;
+package com.mqtt.mqttbasis.mqtt;
 
 import com.mqtt.mqttbasis.official.LimitQueue;
 import lombok.Data;

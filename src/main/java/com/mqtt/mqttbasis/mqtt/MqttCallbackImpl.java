@@ -1,4 +1,4 @@
-package com.mqtt.mqttbasis.controller;
+package com.mqtt.mqttbasis.mqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -25,9 +25,9 @@ public class MqttCallbackImpl implements MqttCallback {
      */
     @Override
     public void messageArrived(String topic, MqttMessage message){
-//        System.out.println("收到服务器消息:");
-//        System.out.println("topic:" + topic);
-//        System.out.println("message:" + message);
+        System.out.println("收到服务器消息:");
+        System.out.println("topic:" + topic);
+        System.out.println("message:" + message);
         MqttConfig.lqueue.offer(message.toString());
     }
 
